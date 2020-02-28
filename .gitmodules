@@ -1,0 +1,6 @@
+[submodule "musa_api"]
+	path = musa_api
+	url = git@github.com:pyama2000/musa_api.git
+[submodule "musa_client"]
+	path = musa_client
+	url = git@github.com:pyama2000/musa_client.git
