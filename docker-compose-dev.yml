@@ -21,23 +21,11 @@ services:
     build:
       context: ./musa_api
       dockerfile: Dockerfile-dev
-    ports:
-      - 8000:8000
-    volumes:
-      - ./musa_api:/musa_api
-    command: cargo watch -x "clippy" -x "run"
+    environment:
+      DATABASE_URL: postgres://admin:admin@postgres:5432/musa
+    command: >
+      bash -c "diesel setup &&
+      diesel migration run"
     depends_on:
       - postgres 
     container_name: musa.rust
-  nuxt:
-    build: 
-      context: ./musa_client
-      dockerfile: Dockerfile-dev
-    ports:
-      - 3000:3000
-    volumes:
-      - ./musa_client:/musa_client
-    command: npm run dev
-    depends_on:
-      - rust
-    container_name: musa.nuxt
