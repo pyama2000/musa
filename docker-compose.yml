@@ -1,17 +1,5 @@
 version: '3'
 services:
-  postgres:
-    image: postgres:alpine
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: musa
-      LANG: ja_JP.utf8
-    ports: 
-      - 5432:5432
-    volumes:
-      - ./docker/postgres/data:/var/lib/postgres/data
-    container_name: musa.postgres
   redis:
     image: redis:alpine
     ports:
@@ -23,15 +11,18 @@ services:
       CLIENT_ID: $CLIENT_ID
       CLIENT_SECRET: $CLIENT_SECRET
       REDIRECT_URI: $REDIRECT_URI
+      REDIS_URL: musa.redis:6379
     ports:
       - 8000:8000
     depends_on:
-      - postgres 
-    container_name: musa.rust
+      - redis
+    container_name: musa.api
   nuxt:
     build: ./musa_client
+    environment:
+      API_BASE_URL: $API_BASE_URL
     ports:
       - 3000:3000
     depends_on:
       - rust
-    container_name: musa.nuxt
+    container_name: musa.client
