@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
   redis:
     image: redis:alpine
@@ -7,6 +7,7 @@ services:
     container_name: musa.redis
   rust:
     build: ./musa_api
+    image: pyama0327/musa_api:latest
     environment:
       CLIENT_ID: $CLIENT_ID
       CLIENT_SECRET: $CLIENT_SECRET
@@ -19,6 +20,7 @@ services:
     container_name: musa.api
   nuxt:
     build: ./musa_client
+    image: pyama0327/musa_client:latest
     environment:
       API_BASE_URL: $API_BASE_URL
     ports:
